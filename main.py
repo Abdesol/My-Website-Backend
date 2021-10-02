@@ -1,10 +1,15 @@
+from typing import ContextManager
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import HTMLResponse
 from models import Blog, Certificate, Project
 from pony.orm import *
 from slugify import slugify
 import datetime
+import uvicorn
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 app.add_middleware(
@@ -14,15 +19,33 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 security = HTTPBasic()
-
 async def authorize(credentials: HTTPBasicCredentials):
     #print(f"Username: {credentials.username}, Password: {credentials.password}")
     if credentials.username == "admin" and credentials.password == "password":
         return True
     else:
         return False
+
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/", response_class=HTMLResponse)
+async def main(request:Request):
+    return templates.TemplateResponse("index.html", context={"request":request})
+
+@app.get("/projects", response_class=HTMLResponse)
+async def projects(request:Request):
+    return templates.TemplateResponse("projects.html", context={"request":request})
+
+@app.get("/certification", response_class=HTMLResponse)
+async def certification(request:Request):
+    return templates.TemplateResponse("certification.html", context={"request":request})
+
+@app.get("/blog", response_class=HTMLResponse)
+async def blog(request:Request):
+    return templates.TemplateResponse("blog.html", context={"request":request})
 
 
 @app.get("/all_projects")
@@ -77,6 +100,15 @@ async def edit_project(id, title:str, description:str, url:str, img:str, credent
             detail="You are not authorized to edit project",
             headers={"WWW-Authenticate": "Basic"}
         )
+
+@app.post("/like_project")
+async def like_project(id):
+    project = Project.get(id=id)
+    if project is not None:
+        with db_session:
+            project.set(likes=project.likes+1)
+    else:
+        return {"Error": "Project not found"}
 
 
 @app.get('/all_blogs')
@@ -136,6 +168,14 @@ async def edit_blog(slug: str, title:str, description:str, content:str, credenti
             headers={"WWW-Authenticate": "Basic"}
         )
 
+@app.post("/like_blog")
+async def like_blog(slug):
+    blog = Blog.get(slug=slug)
+    if blog is not None:
+        blog.set(likes=blog.likes+1)
+    else:
+        return {"Error": "Blog with the given slug not found."}
+
 @app.get('/all_certificates')
 async def all_certificates():
     certificates = []
@@ -173,3 +213,16 @@ async def delete_certificate(name, credentials: HTTPBasicCredentials = Depends(s
             detail="You are not authorized to delete certificate",
             headers={"WWW-Authenticate": "Basic"}
         )
+
+@app.post("/like_certificate")
+async def like_certificate(name):
+    certificate = Certificate.get(name=name)
+    if certificate is not None:
+        certificate.set(likes=certificate.likes+1)
+    else:
+        return {"Error": "Certificate not found."}
+
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=80, host='0.0.0.0' ,reload=True)

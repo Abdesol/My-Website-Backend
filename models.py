@@ -11,16 +11,19 @@ class Blog(db.Entity):
     description = Required(str)
     content = Required(str)
     date = Required(datetime.datetime)
+    likes = Optional(int)
 
 class Project(db.Entity):
     title = Required(str)
     description = Required(str)
     github = Required(str)
     img = Required(str)
+    likes = Optional(int)
 
 class Certificate(db.Entity):
     name = Required(str)
     src = Required(str)
+    likes = Optional(int)
 
 
 db.generate_mapping(create_tables=True)

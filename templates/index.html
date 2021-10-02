@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Abdella Solomon</title>
+    <!-- Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- google-font -->
+    <!-- poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <!-- Audiowide -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins&display=swap" rel="stylesheet">
+   <!--  Bangers -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Poppins&display=swap" rel="stylesheet">
+    <!-- Staatliches -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Poppins&family=Staatliches&display=swap" rel="stylesheet">
+   <!--Bree -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Bree+Serif&family=Poppins&family=Staatliches&display=swap" rel="stylesheet">
+
+
+
+   <!-- Font awesome -->
+    <script src="https://kit.fontawesome.com/6ff322857f.js" crossorigin="anonymous"></script>
+    
+    <!-- custom css file -->
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+
+    <!--  Responsive css file --> 
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
+
+</head>
+
+<body>
+
+
+      <!-- ======================= Start Header Area ============================== -->
+
+    <header class="header_area">
+        <div class="main-menu">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="mr-auto"></div>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="projects">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="blog">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="certification">Certificates</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ======================= End Header Area ============================== -->
+
+    <!--  ======================= Start Main Area ================================ -->
+    <main class="site-main">
+        <!--  ======================= Start Banner Area =======================  -->
+        <section class="site-banner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 site-title">
+                        <h3 class="title-text">Hey</h3>
+                        <h1 class="title-text text-uppercase">I am Abdella</h1>
+                        <h4 class="title-text text-uppercase">Student C# & Python programmer</h4>
+                    </div>
+                    <div class="col-lg-6 col-md-12 banner-image">
+                        <img src="{{ url_for('static', path='/img/banner/banner-image.png') }}" alt="banner-img" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--  ======================= End Banner Area =======================  -->
+
+        <!--  ========================= About Area ==========================  -->
+
+        <section class="about-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="about-image">
+                            <img src="{{ url_for('static', path='/img/about-us.png') }}" alt=""About us" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 about-title">
+                        <div class="title">
+                            <h2 class="title title-text text-uppercase pt-5">
+                                <span>Let me</span>
+                                <span>introduce</span>
+                                <span>myself</span>
+                            </h2>
+                        </div>
+                        <div class="paragraph py-4 w-75">
+                            <p class="para">
+                                My Name is Abdella Solomon. I am 16 years old. I live in Addis Ababa, Ethiopia.
+                            </p>
+                            <p class="para">
+                                I started Programming when I was 14 years old and I started with Python. I learned Basics of Python within a month and it
+                                was really fun for me. When I was younger, I was under the impression that programming was the most difficult thing in the
+                                world but now I realise that programming is fun and enjoyable for me.
+                            </p>
+                            <p class="para">
+                                After I finished the basics of python, the first project I made was a Password Manager which you can view on my github. I 
+                                then made a project called Market Ticketing that makes shopping easy and time efficient. Then, I moved on to Socket 
+                                Programming using which I made chat apps and wireless transfer apps. After this, I changed my path to C++ but I didn't succeeded with it because of 
+                                some reasons. And now, I am tring to learn C#. I changed my path from C++ to C# because, I was not interested with C++.
+                            </p>
+                            <p class="para">
+                                This is my journey.
+                            </p>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--  ========================= End About Area ==========================  -->
+    </main>
+    <!--  ======================= End Main Area ================================ -->
+
+    <footer class="footer-area">
+        <div class="container">
+            <div class="">
+                <div class="social text-center">
+                    <h5 class="text-uppercase">Follow me</h5>
+                    <a href="https://github.com/Abdesol" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com/AbdellaSolomon" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="social text-center">
+                    <a href="https://www.fiverr.com/users/abdthecoder/" target="_blank">Check My Fiverr</a>
+                </div>
+                <div class="copyrights text-center">
+                    <p class="copy">
+                        <br>|Copyright ©2021 All rights reserved|
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+   <!-- jquary-cdn-link -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!--  custom js file  -->
+    <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+</body>
+
+</html>
