@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
-from models import Blog, Project
+from models import Blog, Certificate, Project
 from pony.orm import *
 from slugify import slugify
 import datetime
@@ -74,7 +74,7 @@ async def edit_project(id, title:str, description:str, url:str, img:str, credent
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You are not authorized to delete project",
+            detail="You are not authorized to edit project",
             headers={"WWW-Authenticate": "Basic"}
         )
 
@@ -132,6 +132,44 @@ async def edit_blog(slug: str, title:str, description:str, content:str, credenti
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You are not authorized to delete blog",
+            detail="You are not authorized to edit blog",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
+@app.get('/all_certificates')
+async def all_certificates():
+    certificates = []
+    for certificate in list(select(b for b in Certificate)):
+        certificates.append(certificate.to_dict())
+
+    return {"certificates": certificates}
+
+@app.post('/create_certificate')
+async def create_certificate(name, src, credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        with db_session:
+            certificate = Certificate(name=name, src=src)
+            return {"Certificate Created": certificate.to_dict()}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to create certificate",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
+
+@app.post('/delete_certificate')
+async def delete_certificate(name, credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        with db_session:
+            certificate = Certificate.get(name=name)
+            if certificate is not None:
+                certificate.delete()
+            else:
+                return {"Error": "Certificate not found."}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to delete certificate",
             headers={"WWW-Authenticate": "Basic"}
         )

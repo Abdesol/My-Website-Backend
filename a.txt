@@ -1,0 +1,6 @@
+
+certificate = Certificate.get(name=name)
+if certificate is not None:
+    certificate.delete()
+else:
+    return {"Error": "Certificate not found."}
