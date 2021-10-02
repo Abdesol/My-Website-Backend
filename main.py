@@ -2,7 +2,9 @@ from typing import ContextManager
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import HTMLResponse
+from pydantic.main import BaseModel
+from starlette import responses
+from starlette.responses import FileResponse, HTMLResponse
 from models import Blog, Certificate, Project
 from pony.orm import *
 from slugify import slugify
@@ -10,6 +12,12 @@ import datetime
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI, File, UploadFile
+import os
+import random
+import string
+from fastapi import Body
+
 
 app = FastAPI()
 app.add_middleware(
@@ -37,7 +45,8 @@ async def main(request:Request):
 
 @app.get("/projects", response_class=HTMLResponse)
 async def projects(request:Request):
-    return templates.TemplateResponse("projects.html", context={"request":request})
+    projects = await all_projects()
+    return templates.TemplateResponse("projects.html", context={"request":request, "projects":projects["projects"]})
 
 @app.get("/certification", response_class=HTMLResponse)
 async def certification(request:Request):
@@ -48,6 +57,45 @@ async def blog(request:Request):
     return templates.TemplateResponse("blog.html", context={"request":request})
 
 
+@app.post("/upload_file")
+async def upload_file(file:UploadFile = File(...), credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+            file_name = await generate_file_name()
+            file_name = file_name + "." + file.filename.split(".")[-1]
+            await save_file(file_name, file)
+
+            return {"name": file_name}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to create project",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
+
+
+@app.get("/files/{file_name}")
+async def get_files(file_name:str):
+    try:
+        return FileResponse(f"Files/{file_name}")
+    except:
+        raise HTTPException(status_code=404, detail="File not found")
+
+alphabet = string.ascii_uppercase+string.digits
+name_length = 5
+async def generate_file_name():
+    files = [file.split(".")[0] for file in os.listdir()]
+    while True:
+        gen_name = "".join(random.choices(alphabet, k=name_length))
+        if gen_name not in files:
+            break
+    return gen_name
+
+async def save_file(file_name, file:UploadFile):
+    with open(f"Files/{file_name}", "wb") as f:
+        f.write(file.file.read())
+
+
 @app.get("/all_projects")
 async def all_projects():
     projects = []
@@ -55,12 +103,21 @@ async def all_projects():
         projects.append(project.to_dict())
     return {"projects": projects}
 
-
+class ProjectModel(BaseModel):
+    id:int
+    title:str
+    description:str
+    url:str
+    img_name:str
 @app.post("/create_project")
-async def create_project(title, description, url, img, credentials: HTTPBasicCredentials = Depends(security)):
+async def create_project(request:ProjectModel, credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
         with db_session:
-            project = Project(title=title, description=description, github=url, img=img)
+            project = Project(title=request.title, 
+                            description=request.description, 
+                            github=request.url, 
+                            img=request.img_name,
+                            likes=0)
             return {"Project Created": project.to_dict()}
     else:
         raise HTTPException(
@@ -70,7 +127,7 @@ async def create_project(title, description, url, img, credentials: HTTPBasicCre
         )
 
 @app.post("/delete_project")
-async def delete_project(id, credentials: HTTPBasicCredentials = Depends(security)):
+async def delete_project(id:int = Body(..., embed=True), credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
         project = Project.get(id=id)
         if project is not None:
@@ -86,12 +143,21 @@ async def delete_project(id, credentials: HTTPBasicCredentials = Depends(securit
         )
 
 @app.post("/edit_project")
-async def edit_project(id, title:str, description:str, url:str, img:str, credentials: HTTPBasicCredentials = Depends(security)):
+async def edit_project(request:ProjectModel, credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
-        project = Project.get(id=id)
+        project = Project.get(id=request.id)
         if project is not None:
             with db_session:
-                project.set(title=title, description = description, github=url, img=img)
+                if request.title == "":
+                    request.title = project.title
+                if request.description == "":
+                    request.description = project.description
+                if request.url == "":
+                    request.url = project.github
+                if request.img_name == "":
+                    request.img_name = project.img
+
+                project.set(title=request.title, description = request.description, github=request.url, img=request.img_name)
         else:
             return {"Error": "Project not found"}
     else:
@@ -102,11 +168,20 @@ async def edit_project(id, title:str, description:str, url:str, img:str, credent
         )
 
 @app.post("/like_project")
-async def like_project(id):
+async def like_project(id:int = Body(..., embed=True)):
     project = Project.get(id=id)
     if project is not None:
         with db_session:
             project.set(likes=project.likes+1)
+    else:
+        return {"Error": "Project not found"}
+
+@app.post("/dislike_project")
+async def dislike_project(id:int = Body(..., embed=True)):
+    project = Project.get(id=id)
+    if project is not None:
+        with db_session:
+            project.set(likes=project.likes-1)
     else:
         return {"Error": "Project not found"}
 
