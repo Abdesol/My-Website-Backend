@@ -62,6 +62,22 @@ async def delete_project(id, credentials: HTTPBasicCredentials = Depends(securit
             headers={"WWW-Authenticate": "Basic"}
         )
 
+@app.post("/edit_project")
+async def edit_project(id, title:str, description:str, url:str, img:str, credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        project = Project.get(id=id)
+        if project is not None:
+            with db_session:
+                project.set(title=title, description = description, github=url, img=img)
+        else:
+            return {"Error": "Project not found"}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to delete project",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
 
 @app.get('/all_blogs')
 async def all_blogs():
@@ -110,9 +126,7 @@ async def edit_blog(slug: str, title:str, description:str, content:str, credenti
         with db_session:
             blog = Blog.get(slug=slug)
             if blog is not None:
-                blog.title = title
-                blog.description = description
-                blog.content = content
+                blog.set(title=title, description=description, content=content)
             else:
                 return {"Error": "Blog with the given slug not found."}
     else:
