@@ -102,17 +102,16 @@
     <h1 class="cert-text text-uppercase"><center><br>Certifications</center></h1><br>
     <div class="boxed">
         {% for certificate in certificates %}
-            <div style="margin-bottom: 75px;padding: 20px;">
-                <div style="display: flex;padding-left: 100px;">
+            <div class="project_view" style="margin-bottom: 75px;padding: 30px;">
+                <div style="align-items: center;">
                     <h3 class="cert-text text-uppercase" style="text-align: center;">{{ certificate.name }}</h3>
-                    <div style="display: flex;padding-left: 20%;padding-top: 10px;">
+                    <div style="display: flex;padding-left: 25px;" class="center">
                         <input type="image" id="like_btn{{certificate.id}}"
                                 style="height: 30px; width: 30px;margin-top: 3px;" onclick="likeClicked(this, {{certificate.id}})"/>
-    
                         <div id="like_count{{certificate.id}}" style="font-size: 25px;text-align: center;margin-bottom: 12px;" >{{ certificate.likes }}</div>
                     </div>
                 </div>
-                <img id="img{{certificate.id}}" style="width:90%;padding-left:20px;">
+                <img id="img{{certificate.id}}" style="width:62%;padding-left:20px;">
                 <script>
                     document.getElementById("img{{certificate.id}}").src = main_url + "/files/" + "{{certificate.src}}";
                     likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
@@ -122,17 +121,19 @@
     </div>
     <!-- ======================= End Header Area ============================== -->
 
-    <footer class="footer-area">
+    <footer class="footer-area" style="margin-top: 100px;">
         <div class="container">
             <div class="">
                 <div class="social text-center">
-                    <h5 class="text-uppercase"><br>Follow me</h5>
+                    <h5 class="text-uppercase">Follow me</h5>
+                    <a href="https://www.linkedin.com/in/abdella-solomon-7070ab213/" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="https://github.com/Abdesol" target="_blank"><i class="fab fa-github"></i></a>
                     <a href="https://twitter.com/AbdellaSolomon" target="_blank"><i class="fab fa-twitter"></i></a>
+                    
                 </div>
                 <div class="copyrights text-center">
-                    <p class="para">
-                        |Copyright ©2021 All rights reserved|
+                    <p class="copy">
+                        <br>|Copyright ©2021 All rights reserved|
                     </p>
                 </div>
             </div>
