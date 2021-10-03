@@ -18,6 +18,8 @@ import random
 import string
 from fastapi import Body
 import json
+from decouple import config
+
 
 
 app = FastAPI()
@@ -30,10 +32,12 @@ app.add_middleware(
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+username = config("username")
+password = config("password")
 security = HTTPBasic()
 async def authorize(credentials: HTTPBasicCredentials):
     #print(f"Username: {credentials.username}, Password: {credentials.password}")
-    if credentials.username == "admin" and credentials.password == "password":
+    if credentials.username == username and credentials.password == password:
         return True
     else:
         return False
