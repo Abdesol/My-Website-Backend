@@ -13,12 +13,29 @@ function like_or_dislike(isLike, id){
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");
 
-    xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-        console.log(xhr.status);
-        console.log(xhr.responseText);
-    }};
-
     data = `{"id":` + id + `}`
     xhr.send(data);
+
+    var response = true;
+    xhr.onload = function (){
+        if(xhr.status != 200){
+            return false;
+        }
+    }
+    return response;
+}
+
+function likeBtnStart(button, id){
+    if(liked.includes(parseInt(id))){
+        button.src = window.location.origin + "/static/img/liked.png"
+    }else{
+        button.src = window.location.origin + "/static/img/like.png"
+    }
+}
+
+function loadLocalStorage() {
+    var string_liked = localStorage.getItem("liked");
+    if(string_liked != null){
+        liked  = JSON.parse(string_liked)
+    }
 }

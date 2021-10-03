@@ -23,6 +23,11 @@
 
    <!-- Font awesome -->
     <script src="https://kit.fontawesome.com/6ff322857f.js" crossorigin="anonymous"></script>
+    
+    <!-- jquary-cdn-link -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
      <!--  custom js file  -->
      <script src="{{ url_for('static', path='/js/main.js') }}"></script>
@@ -62,6 +67,36 @@
         </div>
     </header>
     <h1 class="cert-text text-uppercase"><center><br>Projects</center></h1><br>
+    <script>
+        var main_url  = window.location.origin;
+
+        var projects =  {{ projects | safe }};
+
+        loadLocalStorage();
+
+        function likeClicked(button, id){
+            var currentLikes = parseInt(document.getElementById("like_count" + id).innerHTML);
+
+            if(liked.includes(id)){
+                var response = like_or_dislike(false, id);
+                if(response === true){
+                    document.getElementById("like_count" + id).innerHTML = currentLikes - 1
+                    button.src = "{{ url_for('static', path='/img/like.png') }}"
+                    liked.splice(liked.indexOf(id), 1)
+                }
+            }
+            else{
+                var response = like_or_dislike(true, id);
+                if(response === true){
+                    document.getElementById("like_count" + id).innerHTML = currentLikes + 1
+                    button.src = "{{ url_for('static', path='/img/liked.png') }}"
+                    liked.push(id);
+                }
+            }
+            localStorage.removeItem("liked");
+            localStorage.setItem("liked", JSON.stringify(liked));
+        }
+    </script>
     <div class="boxed">
         {% for project in projects %}
             <div class="project_view">
@@ -78,10 +113,10 @@
                     <div  style="display: flex;align-items: center;">
                         <div  style="display: flex;align-items: center;margin-right: 25px;">
 
-                            <input type="image" id="like_btn" src="{{ url_for('static', path='/img/like.png') }}"
+                            <input type="image" id="like_btn{{project.id}}"
                                     style="height: 30px; width: 30px;" onclick="likeClicked(this, {{project.id}})"/>
 
-                            <div id="like_count{{project.id}}" style="font-size: 25px;">{{ project.likes }}</div>
+                            <div id="like_count{{project.id}}" style="font-size: 25px;" >{{ project.likes }}</div>
 
                         </div>
 
@@ -90,28 +125,8 @@
                 </div>
                 
                 <script>
-                    var main_url  = window.location.origin;
-                    document.getElementById("{{project.id}}").src = main_url + "/files/" + "{{project.img}}"
-
-                    
-                    function likeClicked(button, id){
-                        var currentLikes = parseInt(document.getElementById("like_count" + id).innerHTML);
-
-                        if(liked.includes(id)){
-                            like_or_dislike(false, id);
-                            document.getElementById("like_count" + id).innerHTML = currentLikes - 1
-                            button.src = "{{ url_for('static', path='/img/like.png') }}"
-                            liked.splice(liked.indexOf(id), 1)
-                        }
-                        else{
-                            like_or_dislike(true, id);
-                            document.getElementById("like_count" + id).innerHTML = currentLikes + 1
-                            button.src = "{{ url_for('static', path='/img/liked.png') }}"
-                            liked.push(id);
-                        }
-                        console.log(liked);
-                    }
-                    
+                    document.getElementById("{{project.id}}").src = main_url + "/files/" + "{{project.img}}";
+                    likeBtnStart(document.getElementById("like_btn{{project.id}}"), "{{project.id}}")
                 </script>
             </div>
         {% endfor %}

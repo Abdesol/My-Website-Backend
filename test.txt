@@ -1,0 +1,15 @@
+function likeBtnStarted(){
+    console.log(typeof(projects))
+    for (let i = 0; i < projects.length; i++){
+        var button  = document.getElementById("like_btn" + projects[i].id);
+        var id = projects.id;
+        
+        if(liked.includes(id)){
+            console.log("We liked it before");
+            button.src = window.location.origin + "/static/img/liked.png"
+        }else{
+            console.log("We didn't like it before");
+            button.src = window.location.origin + "/static/img/like.png"
+        }
+    }
+}
