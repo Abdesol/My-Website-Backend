@@ -42,7 +42,17 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request:Request):
-    return templates.TemplateResponse("index.html", context={"request":request})
+    aboutme_ = open("Database/aboutme.txt", "r")
+    aboutme = aboutme_.read()
+    aboutme_.close()
+
+    status_ = open("Database/status.txt", "r")
+    status = status_.read()
+    status_.close()
+
+    data = {"aboutme":aboutme, "status":status}
+
+    return templates.TemplateResponse("index.html", context={"request":request, "data":data})
 
 @app.get("/projects", response_class=HTMLResponse)
 async def projects(request:Request):
@@ -57,6 +67,32 @@ async def certification(request:Request):
 @app.get("/blog", response_class=HTMLResponse)
 async def blog(request:Request):
     return templates.TemplateResponse("blog.html", context={"request":request})
+
+@app.post("/set_aboutme")
+async def set_aboutme(text:str = Body(...), credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        aboutme_ = open("Database/aboutme.txt", "w+")
+        aboutme_.write(text)
+        aboutme_.close()
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to create project",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
+@app.post("/set_status")
+async def set_status(text:str = Body(...), credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        status_ = open("Database/status.txt", "w+")
+        status_.write(text)
+        status_.close()
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to create project",
+            headers={"WWW-Authenticate": "Basic"}
+        )
 
 
 @app.post("/upload_file")
@@ -245,7 +281,7 @@ async def dislike_certificate(id:int = Body(..., embed=True)):
     else:
         return {"Error": "Project not found"}
 
-
+"""
 @app.get('/all_blogs')
 async def all_blogs():
     blogs = []
@@ -302,6 +338,7 @@ async def edit_blog(slug: str, title:str, description:str, content:str, credenti
             detail="You are not authorized to edit blog",
             headers={"WWW-Authenticate": "Basic"}
         )
+"""
 
 
 

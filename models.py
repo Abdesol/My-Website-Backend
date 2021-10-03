@@ -2,7 +2,7 @@ from pony.orm import *
 import datetime
 
 db = Database()
-db.bind(provider='sqlite', filename='database.sqlite', create_db=True)
+db.bind(provider='sqlite', filename='Database/database.sqlite', create_db=True)
 
 
 class Blog(db.Entity):
