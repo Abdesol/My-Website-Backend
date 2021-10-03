@@ -74,8 +74,6 @@ async def upload_file(file:UploadFile = File(...), credentials: HTTPBasicCredent
             headers={"WWW-Authenticate": "Basic"}
         )
 
-
-
 @app.get("/files/{file_name}")
 async def get_files(file_name:str):
     try:
@@ -188,6 +186,66 @@ async def dislike_project(id:int = Body(..., embed=True)):
         return {"Error": "Project not found"}
 
 
+@app.get('/all_certificates')
+async def all_certificates():
+    certificates = []
+    for certificate in list(select(b for b in Certificate)):
+        certificates.append(certificate.to_dict())
+
+    return {"certificates": certificates}
+
+class CertificateModel(BaseModel):
+    name:str
+    src:str
+@app.post('/create_certificate')
+async def create_certificate(request:CertificateModel, credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        with db_session:
+            certificate = Certificate(name=request.name, src=request.src, likes=0)
+            return {"Certificate Created": certificate.to_dict()}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to create certificate",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
+@app.post('/delete_certificate')
+async def delete_certificate(id, credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        with db_session:
+            certificate = Certificate.get(id=id)
+            if certificate is not None:
+                certificate.delete()
+            else:
+                return {"Error": "Certificate not found."}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to delete certificate",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
+
+@app.post("/like_certificate")
+async def like_certificate(id:int = Body(..., embed=True)):
+    certificate = Certificate.get(id=id)
+    if certificate is not None:
+        with db_session:
+            certificate.set(likes=certificate.likes+1)
+    else:
+        return {"Error": "Project not found"}
+
+@app.post("/dislike_certificate")
+async def dislike_certificate(id:int = Body(..., embed=True)):
+    certificate = Certificate.get(id=id)
+    if certificate is not None:
+        with db_session:
+            certificate.set(likes=certificate.likes-1)
+    else:
+        return {"Error": "Project not found"}
+
+
 @app.get('/all_blogs')
 async def all_blogs():
     blogs = []
@@ -244,60 +302,6 @@ async def edit_blog(slug: str, title:str, description:str, content:str, credenti
             detail="You are not authorized to edit blog",
             headers={"WWW-Authenticate": "Basic"}
         )
-
-@app.post("/like_blog")
-async def like_blog(slug):
-    blog = Blog.get(slug=slug)
-    if blog is not None:
-        blog.set(likes=blog.likes+1)
-    else:
-        return {"Error": "Blog with the given slug not found."}
-
-@app.get('/all_certificates')
-async def all_certificates():
-    certificates = []
-    for certificate in list(select(b for b in Certificate)):
-        certificates.append(certificate.to_dict())
-
-    return {"certificates": certificates}
-
-@app.post('/create_certificate')
-async def create_certificate(name, src, credentials: HTTPBasicCredentials = Depends(security)):
-    if await authorize(credentials):
-        with db_session:
-            certificate = Certificate(name=name, src=src)
-            return {"Certificate Created": certificate.to_dict()}
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You are not authorized to create certificate",
-            headers={"WWW-Authenticate": "Basic"}
-        )
-
-
-@app.post('/delete_certificate')
-async def delete_certificate(name, credentials: HTTPBasicCredentials = Depends(security)):
-    if await authorize(credentials):
-        with db_session:
-            certificate = Certificate.get(name=name)
-            if certificate is not None:
-                certificate.delete()
-            else:
-                return {"Error": "Certificate not found."}
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You are not authorized to delete certificate",
-            headers={"WWW-Authenticate": "Basic"}
-        )
-
-@app.post("/like_certificate")
-async def like_certificate(name):
-    certificate = Certificate.get(name=name)
-    if certificate is not None:
-        certificate.set(likes=certificate.likes+1)
-    else:
-        return {"Error": "Certificate not found."}
 
 
 

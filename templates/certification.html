@@ -60,14 +60,57 @@
             </nav>
         </div>
     </header>
+    <script>var main_url  = window.location.origin;
+        var dislike_url = window.location.origin + "/dislike_certificate";
+        var like_url = window.location.origin + "/like_certificate";
 
+        var certificates =  {{ certificates | safe }};
+
+        var LikedCertificates = loadLocalStorage("LikedCertificates");
+
+        function likeClicked(button, id){
+            var currentLikes = parseInt(document.getElementById("like_count" + id).innerHTML);
+
+            if(LikedCertificates.includes(id)){
+                var response = like_or_dislike(id, dislike_url);
+                if(response === true){
+                    document.getElementById("like_count" + id).innerHTML = currentLikes - 1
+                    button.src = "{{ url_for('static', path='/img/like.png') }}"
+                    LikedCertificates.splice(LikedCertificates.indexOf(id), 1)
+                }
+            }
+            else{
+                var response = like_or_dislike(id, like_url);
+                if(response === true){
+                    document.getElementById("like_count" + id).innerHTML = currentLikes + 1
+                    button.src = "{{ url_for('static', path='/img/liked.png') }}"
+                    LikedCertificates.push(id);
+                }
+            }
+            localStorage.removeItem("LikedCertificates");
+            localStorage.setItem("LikedCertificates", JSON.stringify(LikedCertificates));
+        }
+    </script>
     <h1 class="cert-text text-uppercase"><center><br>Certifications</center></h1><br>
     <div class="boxed">
-        <center><div><img src="img/c_img/python.png" style="width:75%;"></div></center>
-
-        <center><div><img src="img/c_img/html.png" style="width:75%;"></div></center>
-
-        <center><div><img src="img/c_img/django.png" style="width:75%;"></div></center>
+        {% for certificate in certificates %}
+            <div style="padding: 40px;">
+                <div  style="display: flex;align-items: center;">
+                    <h3 class="cert-text text-uppercase" style="text-align: center;padding-left: 300px;padding-right:120px;">{{ certificate.name }}</h3>
+                    <div style="display: flex;">
+                        <input type="image" id="like_btn{{certificate.id}}"
+                                style="height: 30px; width: 30px;margin-top: 3px;" onclick="likeClicked(this, {{certificate.id}})"/>
+    
+                        <div id="like_count{{certificate.id}}" style="font-size: 25px;text-align: center;margin-bottom: 12px;" >{{ certificate.likes }}</div>
+                    </div>
+                </div>
+                <center><div><img id="img{{certificate.id}}" style="width:75%;"></div></center>
+                <script>
+                    document.getElementById("img{{certificate.id}}").src = main_url + "/files/" + "{{certificate.src}}";
+                    likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
+                </script>
+            </div>
+        {% endfor %}
     </div>
     <!-- ======================= End Header Area ============================== -->
 
