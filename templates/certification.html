@@ -94,10 +94,10 @@
     <h1 class="cert-text text-uppercase"><center><br>Certifications</center></h1><br>
     <div class="boxed">
         {% for certificate in certificates %}
-            <div style="padding: 40px;">
-                <div  style="display: flex;align-items: center;">
+            <div style="padding: 70px;display: list-item;margin-bottom: 10px;">
+                <div  style="display: flex;">
                     <h3 class="cert-text text-uppercase" style="text-align: center;padding-left: 300px;padding-right:120px;">{{ certificate.name }}</h3>
-                    <div style="display: flex;">
+                    <div style="display: flex;float: right;">
                         <input type="image" id="like_btn{{certificate.id}}"
                                 style="height: 30px; width: 30px;margin-top: 3px;" onclick="likeClicked(this, {{certificate.id}})"/>
     

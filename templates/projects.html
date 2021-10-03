@@ -107,14 +107,14 @@
     <div class="boxed">
         {% for project in projects %}
             <div class="project_view">
-                <div class="vi_left">
+                <div class="vi_left" style="padding-right: 40px;">
                     <center>
                         <img id="{{project.id}}" style="height: 150px;width: 150px; padding: 10px;">
                     </center>
                 </div>
                 <div class="vi_right">
-                    <p class="title">{{ project.title }}</p>
-                    <p class="content">
+                    <p class="title" style="margin-bottom: -15px;margin-left: 10px;">{{ project.title }}</p>
+                    <p class="content" style="white-space: pre-line;">
                         {{ project.description }}
                     </p>
                     <div  style="display: flex;align-items: center;">
