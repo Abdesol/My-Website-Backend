@@ -2,7 +2,7 @@ import requests
 import json
 
 from requests import auth
-"""
+
 title = "Robert Assistant"
 desc = "This project is made for programmers. It makes programmers work more efficient.\nIt have alarm, code saving for copying it, task manager, translation and more services\nFor more information about the code click on View on github."
 github = "https://github.com/Champions-clan/Robert-Assistant"
@@ -10,14 +10,15 @@ img_name = "robert_logo.png"
 img = open(img_name, "rb") 
 
 response = requests.post(
-    "http://127.0.0.1/upload_project_img",
+    "http://127.0.0.1/upload_file",
     auth=("admin", "password"),
-    files={"img":img}
+    files={"file":img}
     )
 r = response.json()
 print(r)
 
 data = {
+    "id":1,
     "title":title,
     "description":desc,
     "url":github,
@@ -29,7 +30,7 @@ response2 =  requests.post(
     auth=("admin", "password"),
     json=data
 )
-
+"""
 print(response2.json())
 response = requests.post(
     "http://127.0.0.1/delete_project",
@@ -38,7 +39,7 @@ response = requests.post(
     )
 r = response.json()
 print(r)
-"""
+
 
 data = {
     "id":1,
@@ -54,3 +55,4 @@ response = requests.post(
     )
 r = response.json()
 print(r)
+"""

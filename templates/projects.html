@@ -23,12 +23,7 @@
 
    <!-- Font awesome -->
     <script src="https://kit.fontawesome.com/6ff322857f.js" crossorigin="anonymous"></script>
-    
-    <!-- jquary-cdn-link -->
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
- 
+
      <!--  custom js file  -->
      <script src="{{ url_for('static', path='/js/main.js') }}"></script>
     
@@ -82,48 +77,39 @@
                     </p>
                     <div  style="display: flex;align-items: center;">
                         <div  style="display: flex;align-items: center;margin-right: 25px;">
+
                             <input type="image" id="like_btn" src="{{ url_for('static', path='/img/like.png') }}"
-                                    style="height: 30px; width: 30px;" onclick="likeClicked(this)"/>
-                            <div id="like_count" style="font-size: 25px;">{{ project.likes }}</div>
+                                    style="height: 30px; width: 30px;" onclick="likeClicked(this, {{project.id}})"/>
+
+                            <div id="like_count{{project.id}}" style="font-size: 25px;">{{ project.likes }}</div>
+
                         </div>
+
                         <a href="{{ project.github }}" target="_blank"><div class="btn">View on Github</div></a>
                     </div>
                 </div>
                 
                 <script>
-                    document.getElementById("{{project.id}}").src = window.location.href.split("/")[0] + "/files/" + "{{project.img}}"
+                    var main_url  = window.location.origin;
+                    document.getElementById("{{project.id}}").src = main_url + "/files/" + "{{project.img}}"
 
-                    var liked = false;
+                    
+                    function likeClicked(button, id){
+                        var currentLikes = parseInt(document.getElementById("like_count" + id).innerHTML);
 
-                    function likeClicked(button){
-                        var currentLikes = parseInt(document.getElementById("like_count").innerHTML);
-                        if(liked == true){
-                            const userAction = async () => {
-                                const response = await fetch(window.location.href.split("/")[0] + "dislike_project", {
-                                    method: 'POST',
-                                    body: "", // string or object
-                                    headers: {
-                                    'Content-Type': 'application/json'
-                                    }
-                                });
-                            }
-                            document.getElementById("like_count").innerHTML = currentLikes - 1
+                        if(liked.includes(id)){
+                            like_or_dislike(false, id);
+                            document.getElementById("like_count" + id).innerHTML = currentLikes - 1
                             button.src = "{{ url_for('static', path='/img/like.png') }}"
+                            liked.splice(liked.indexOf(id), 1)
                         }
                         else{
-                            const userAction = async () => {
-                                const response = await fetch(window.location.href.split("/")[0] + "like_project", {
-                                    method: 'POST',
-                                    body: "", // string or object
-                                    headers: {
-                                    'Content-Type': 'application/json'
-                                    }
-                                });
-                            }
-                            document.getElementById("like_count").innerHTML = currentLikes + 1
+                            like_or_dislike(true, id);
+                            document.getElementById("like_count" + id).innerHTML = currentLikes + 1
                             button.src = "{{ url_for('static', path='/img/liked.png') }}"
+                            liked.push(id);
                         }
-                        liked = !liked;
+                        console.log(liked);
                     }
                     
                 </script>
