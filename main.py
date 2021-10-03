@@ -51,7 +51,8 @@ async def projects(request:Request):
 
 @app.get("/certification", response_class=HTMLResponse)
 async def certification(request:Request):
-    return templates.TemplateResponse("certification.html", context={"request":request})
+    certificates = await all_certificates()
+    return templates.TemplateResponse("certification.html", context={"request":request, "certificates":certificates["certificates"]})
 
 @app.get("/blog", response_class=HTMLResponse)
 async def blog(request:Request):

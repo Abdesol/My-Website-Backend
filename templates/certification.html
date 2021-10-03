@@ -21,23 +21,21 @@
     <!--Bree -->
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Bree+Serif&family=Poppins&family=Staatliches&display=swap" rel="stylesheet">
 
-
-   <!-- Font awesome -->
-    <script src="https://kit.fontawesome.com/6ff322857f.js" crossorigin="anonymous"></script>
+    <!--  custom js file  -->
+    <script src="{{ url_for('static', path='/js/main.js') }}"></script>
     
+    <!-- Font awesome -->
+    <script src="https://kit.fontawesome.com/6ff322857f.js" crossorigin="anonymous"></script>
+
     <!-- custom css file -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
 
     <!--  Responsive css file --> 
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
 
 </head>
 
 <body>
-
-
-      <!-- ======================= Start Header Area ============================== -->
-
     <header class="header_area">
         <div class="main-menu">
             <nav class="navbar navbar-expand-lg navbar-light">
@@ -48,17 +46,21 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="mr-auto"></div>
                     <ul class="navbar-nav">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="projects.html">Projects</a>
+                            <a class="nav-link" href="projects">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="blog">Blog</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
+
     <h1 class="cert-text text-uppercase"><center><br>Certifications</center></h1><br>
     <div class="boxed">
         <center><div><img src="img/c_img/python.png" style="width:75%;"></div></center>
@@ -91,20 +93,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-    <!--  isotope js library  -->
-    <script src="vendor/isotope/isotope.min.js"></script>
-
-    <!--  Magnific popup script file  -->
-    <script src="vendor/Magnific-Popup/dist/jquery.magnific-popup.min.js"></script>
-
-    <!--  Owl-carousel js file  -->
-    <script src="vendor/owl-carousel/js/owl.carousel.min.js"></script>
-
-    <!--  custom js file  -->
-    <script src="js/main.js"></script>
-
-
 </body>
 
 </html>
