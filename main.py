@@ -347,4 +347,4 @@ async def edit_blog(slug: str, title:str, description:str, content:str, credenti
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=80, host='0.0.0.0' ,reload=True)
+    uvicorn.run("main:app", port=5000, host='0.0.0.0' ,reload=True)
