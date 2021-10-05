@@ -72,6 +72,10 @@ async def certification(request:Request):
 async def blog(request:Request):
     return templates.TemplateResponse("blog.html", context={"request":request})
 
+@app.get("/admin", response_class=HTMLResponse)
+async def blog(request:Request):
+    return templates.TemplateResponse("admin_login.html", context={"request":request})
+
 @app.post("/set_aboutme")
 async def set_aboutme(text:str = Body(...), credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
