@@ -2,6 +2,8 @@ My Name is Abdella Solomon. I am 16 years old. I live in Addis Ababa, Ethiopia.
 
 I started programming when I was 14 years old and I started with Python. I learned the Basics of Python within a month and it was fun for me. When I was younger, I was under the impression that programming was the most difficult thing in the world but now I realize that programming is fun and enjoyable for me.
 
-After I finished the basics of python, the first project I made was a Password Manager which you can view on my Github. I  then made a project called Market Ticketing that makes shopping easy and time-efficient. Then, I moved on to Socket Programming using which I made chat apps and wireless transfer apps. After this, I changed my path to C++ but I didn't succeed with it because of some reason. And after that, I started learning C#. I felt comfortable with C# and I really loved the language. Even I built plenty of very nice projects with it.  My favorites are CutCode and YoChat. You can view them on my Github. And now I am trying to learn ml(machine learning) and deep dive into it.
+After I finished the basics of python, the first project I made was a Password Manager which you can view on my Github. I  then made a project called Market Ticketing that makes shopping easy and time-efficient. Then, I moved on to Socket Programming using which I made chat apps and wireless transfer apps. 
+
+After that, I changed my path to C++ but I didn't succeed with it because of some reason. And after that, I started learning C#. I felt comfortable with C# and I really loved the language. Even I built plenty of very nice projects with it.  My favorites are CutCode and YoChat. You can view them on my Github. And now I am trying to learn ml(machine learning) and deep dive into it.
 
 This is my journey.
