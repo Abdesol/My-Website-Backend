@@ -67,10 +67,13 @@
                             <a class="nav-link" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="blog">Blog</a>
+                            <a class="nav-link">Projects</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="certification">Certificates</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="blog">Blog</a>
                         </li>
                     </ul>
                 </div>
@@ -78,74 +81,77 @@
         </div>
     </header>
 
-
-    <h1 class="cert-text text-uppercase"><center><br>Projects</center></h1><br>
-    <script>
-        var main_url  = window.location.origin;
-        var dislike_url = window.location.origin + "/dislike_project";
-        var like_url = window.location.origin + "/like_project";
-
-        var projects =  {{ projects | safe }};
-
-        var LikedProjects = loadLocalStorage("LikedProjects");
-
-        function likeClicked(button, id){
-            var currentLikes = parseInt(document.getElementById("like_count" + id).innerHTML);
-
-            if(LikedProjects.includes(id)){
-                var response = like_or_dislike(id, dislike_url);
-                if(response === true){
-                    document.getElementById("like_count" + id).innerHTML = currentLikes - 1
-                    button.src = "{{ url_for('static', path='/img/like.png') }}"
-                    LikedProjects.splice(LikedProjects.indexOf(id), 1)
+    <main class="site-main">
+        <h1 class="cert-text text-uppercase"><center><br>Projects</center></h1><br>
+        <script>
+            var main_url  = window.location.origin;
+            var dislike_url = window.location.origin + "/dislike_project";
+            var like_url = window.location.origin + "/like_project";
+    
+            var projects =  {{ projects | safe }};
+    
+            var LikedProjects = loadLocalStorage("LikedProjects");
+    
+            function likeClicked(button, id){
+                var currentLikes = parseInt(document.getElementById("like_count" + id).innerHTML);
+    
+                if(LikedProjects.includes(id)){
+                    var response = like_or_dislike(id, dislike_url);
+                    if(response === true){
+                        document.getElementById("like_count" + id).innerHTML = currentLikes - 1
+                        button.src = "{{ url_for('static', path='/img/like.png') }}"
+                        LikedProjects.splice(LikedProjects.indexOf(id), 1)
+                    }
                 }
-            }
-            else{
-                var response = like_or_dislike(id, like_url);
-                if(response === true){
-                    document.getElementById("like_count" + id).innerHTML = currentLikes + 1
-                    button.src = "{{ url_for('static', path='/img/liked.png') }}"
-                    LikedProjects.push(id);
+                else{
+                    var response = like_or_dislike(id, like_url);
+                    if(response === true){
+                        document.getElementById("like_count" + id).innerHTML = currentLikes + 1
+                        button.src = "{{ url_for('static', path='/img/liked.png') }}"
+                        LikedProjects.push(id);
+                    }
                 }
+                localStorage.removeItem("LikedProjects");
+                localStorage.setItem("LikedProjects", JSON.stringify(LikedProjects));
             }
-            localStorage.removeItem("LikedProjects");
-            localStorage.setItem("LikedProjects", JSON.stringify(LikedProjects));
-        }
-    </script>
-    <div class="boxed">
-        {% for project in projects %}
-            <div class="project_view">
-                <div class="vi_left" style="padding-right: 10px;">
-                    <center>
-                        <img id="{{project.id}}" style="height: 150px;width: 150px; padding: 10px;margin-left: 10px;">
-                    </center>
-                </div>
-                <div class="vi_right">
-                    <p class="title" style="margin-bottom: -15px;margin-left: 10px;">{{ project.title }}</p>
-                    <p class="content" style="white-space: pre-line;">
-                        {{ project.description }}
-                    </p>
-                    <div  style="display: flex;align-items: center;">
-                        <div  style="display: flex;align-items: center;margin-right: 25px;">
-
-                            <input type="image" id="like_btn{{project.id}}"
-                                    style="height: 30px; width: 30px;" onclick="likeClicked(this, {{project.id}})"/>
-
-                            <div id="like_count{{project.id}}" style="font-size: 25px;" >{{ project.likes }}</div>
-
-                        </div>
-
-                        <a href="{{ project.github }}" target="_blank"><div class="btn">View on Github</div></a>
+        </script>
+        <div class="boxed">
+            {% for project in projects %}
+                <div class="project_view">
+                    <div class="vi_left" style="padding-right: 10px;">
+                        <center>
+                            <img id="{{project.id}}" style="height: 150px;width: 150px; padding: 10px;margin-left: 10px;">
+                        </center>
                     </div>
+                    <div class="vi_right">
+                        <p class="title" style="margin-bottom: -15px;margin-left: 10px;">{{ project.title }}</p>
+                        <p class="content" style="white-space: pre-line;">
+                            {{ project.description }}
+                        </p>
+                        <div  style="display: flex;align-items: center;">
+                            <div  style="display: flex;align-items: center;margin-right: 25px;">
+    
+                                <input type="image" id="like_btn{{project.id}}"
+                                        style="height: 30px; width: 30px;" onclick="likeClicked(this, {{project.id}})"/>
+    
+                                <div id="like_count{{project.id}}" style="font-size: 25px;" >{{ project.likes }}</div>
+    
+                            </div>
+    
+                            <a href="{{ project.github }}" target="_blank"><div class="btn">View on Github</div></a>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        document.getElementById("{{project.id}}").src = main_url + "/files/" + "{{project.img}}";
+                        likeBtnStart(document.getElementById("like_btn{{project.id}}"), "{{project.id}}", LikedProjects)
+                    </script>
                 </div>
-                
-                <script>
-                    document.getElementById("{{project.id}}").src = main_url + "/files/" + "{{project.img}}";
-                    likeBtnStart(document.getElementById("like_btn{{project.id}}"), "{{project.id}}", LikedProjects)
-                </script>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+
+    </main>
+
     <!-- ======================= End Header Area ============================== -->
 
     <footer class="footer-area" style="margin-top: 100px;">

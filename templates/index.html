@@ -56,13 +56,16 @@
                     <div class="mr-auto"></div>
                     <ul class="navbar-nav">
                         <li class="nav-item">
+                            <a class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="projects">Projects</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="blog">Blog</a>
+                            <a class="nav-link" href="certification">Certificates</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="certification">Certificates</a>
+                            <a class="nav-link" href="blog">Blog</a>
                         </li>
                     </ul>
                 </div>
@@ -73,22 +76,20 @@
     <!-- ======================= End Header Area ============================== -->
 
     <!--  ======================= Start Main Area ================================ -->
-    <main class="site-main">
+    <main class="site-main" style="padding-top: 50px;">
         <!--  ======================= Start Banner Area =======================  -->
-        <section class="site-banner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 site-title">
-                        <h3 class="title-text">Hey</h3>
-                        <h1 class="title-text text-uppercase">I am Abdella</h1>
-                        <h4 class="title-text text-uppercase">{{data.status}}</h4>
-                    </div>
-                    <div class="col-lg-6 col-md-12 banner-image">
-                        <img src="{{ url_for('static', path='/img/banner/banner-image.png') }}" alt="banner-img" class="img-fluid">
-                    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 site-title">
+                    <h3 class="title-text">Hey</h3>
+                    <h1 class="title-text text-uppercase">I am Abdella</h1>
+                    <h4 class="title-text text-uppercase">{{data.status}}</h4>
+                </div>
+                <div class="col-lg-6 col-md-12 banner-image">
+                    <img src="{{ url_for('static', path='/img/banner/banner-image.png') }}" alt="banner-img" class="img-fluid">
                 </div>
             </div>
-        </section>
+        </div>
         <!--  ======================= End Banner Area =======================  -->
 
         <!--  ========================= About Area ==========================  -->
