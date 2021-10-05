@@ -105,24 +105,22 @@
                 localStorage.setItem("LikedCertificates", JSON.stringify(LikedCertificates));
             }
         </script>
-        <h1 class="cert-text text-uppercase"><center><br>Certifications</center></h1><br>
+        <h1 class="cert-text text-uppercase" style="padding-bottom: 30px;"><center><br>Certifications</center></h1><br>
         <div class="boxed">
             {% for certificate in certificates %}
-                <div class="project_view" style="margin-bottom: 75px;padding: 30px;">
-                    <div style="align-items: center;">
-                        <h3 class="cert-text text-uppercase" style="text-align: center;">{{ certificate.name }}</h3>
-                        <div style="display: flex;padding-left: 25px;">
-                            <input type="image" id="like_btn{{certificate.id}}"
-                                    style="height: 30px; width: 30px;margin-top: 3px;" onclick="likeClicked(this, {{certificate.id}})"/>
-                            <div id="like_count{{certificate.id}}" style="font-size: 18px;padding-top: 5px;" >{{ certificate.likes }}</div>
-                        </div>
+                <div style="display: flex;padding-left: 18%;">
+                    <h3 class="cert-text text-uppercase" style="padding-left: 30px;">{{ certificate.name }}</h3>
+                    <div style="display: flex;padding-left: 5%"></div>
+                        <input type="image" id="like_btn{{certificate.id}}"
+                                style="height: 30px; width: 30px;" onclick="likeClicked(this, {{certificate.id}})"/>
+                        <div id="like_count{{certificate.id}}" style="font-size: 18px;padding-top: 2px;" >{{ certificate.likes }}</div>
                     </div>
-                    <img id="img{{certificate.id}}" style="width:62%;padding-left:20px;">
-                    <script>
-                        document.getElementById("img{{certificate.id}}").src = main_url + "/files/" + "{{certificate.src}}";
-                        likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
-                    </script>
                 </div>
+                <img style="padding-left: 18%;width: 80%;padding-bottom: 5%;" id="img{{certificate.id}}">
+                <script>
+                    document.getElementById("img{{certificate.id}}").src = main_url + "/files/" + "{{certificate.src}}";
+                    likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
+                </script>
             {% endfor %}
         </div>
     </main>

@@ -25,4 +25,5 @@ html, body{
     /* font family variables. */ 
     --roboto: 'Roboto',cursive;
     --audio: 'Audiowide',sans-serif;
+    --poppins: font-family: 'Poppins', sans-serif;
 } 
