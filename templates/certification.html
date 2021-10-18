@@ -124,21 +124,6 @@
                         likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
                     </script>
                 </div>
-            <!--
-                <div style="display: flex;padding-left: 18%;">
-                    <h3 class="cert-text text-uppercase" style="padding-left: 30px;">{{ certificate.name }}</h3>
-                    <div style="display: flex;padding-left: 5%"></div>
-                        <input type="image" id="like_btn{{certificate.id}}"
-                                style="height: 30px; width: 30px;" onclick="likeClicked(this, {{certificate.id}})"/>
-                        <div id="like_count{{certificate.id}}" style="font-size: 18px;padding-top: 2px;" >{{ certificate.likes }}</div>
-                    </div>
-                </div>
-                <img style="padding-left: 18%;width: 80%;padding-bottom: 5%;" id="img{{certificate.id}}">
-                <script>
-                    document.getElementById("img{{certificate.id}}").src = main_url + "/files/" + "{{certificate.src}}";
-                    likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
-                </script>
-            -->
             {% endfor %}
         </div>
     </main>
@@ -153,7 +138,8 @@
                     <a href="https://www.linkedin.com/in/abdella-solomon-7070ab213/" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="https://github.com/Abdesol" target="_blank"><i class="fab fa-github"></i></a>
                     <a href="https://twitter.com/AbdellaSolomon" target="_blank"><i class="fab fa-twitter"></i></a>
-                    
+                    <a href="https://abdesol.medium.com/" target="_blank"><i class="fab fa-medium"></i></a>
+                    <a href="https://stackoverflow.com/users/13993558/abdella-solomon" target="_blank"><i class="fab fa-stack-overflow"></i></a>
                 </div>
                 <div class="copyrights text-center">
                     <p class="copy">
