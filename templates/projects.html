@@ -15,7 +15,7 @@
 
 <!-- Bootstrap -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
     <!-- google-font -->
@@ -116,29 +116,26 @@
         <div class="boxed">
             {% for project in projects %}
                 <div class="project_view" style="margin-left: 10%;margin-right: 10%;margin-bottom: 25px;">
-                    <div class="vi_left" style="padding-right: 10px;">
+                    <div class="vi_left" style="padding-right: 4px;">
                         <center>
                             <div>
 
                             </div>
-                            <img id="{{project.id}}" style="height: 120px;width: 120px; padding: 10px;margin-left: 10px;">
+                            <img id="{{project.id}}" style="height: 110px;width: 110px;">
                         </center>
                     </div>
                     <div class="vi_right">
-                        <p class="title" style="margin-bottom: -15px;padding-left: 10px;">{{ project.title }}</p>
-                        <p class="content" style="white-space: pre-line;padding-left: 10px;">
+                        <p class="project_title b" style="margin: 0px;">{{ project.title }}</p>
+                        <p class="content" style="padding-right: 50px;">
                             {{ project.description }}
                         </p>
-                        <div  style="display: flex;align-items: center;margin-bottom: 15px;margin-left: -5px;">
-                            <div  style="display: flex;align-items: center;margin-right: 25px;">
-    
+                        <div style="display: flex;margin-bottom: 15px;">
+                            <div style="display: flex;align-items: center;padding-right:10px;">
                                 <input type="image" id="like_btn{{project.id}}"
                                         style="height: 30px; width: 30px;" onclick="likeClicked(this, {{project.id}})"/>
     
                                 <div id="like_count{{project.id}}" style="font-size: 18px;" >{{ project.likes }}</div>
-    
                             </div>
-    
                             <a href="{{ project.github }}" target="_blank"><div class="btn">View Project</div></a>
                         </div>
                     </div>

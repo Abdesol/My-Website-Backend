@@ -32,6 +32,11 @@
 	width: 30%;
 }
 
+.project_title{
+    font-family: 'Poppins', sans-serif;
+    font-size: 35px;
+}
+
 .list-view .project_view:last-child{
 	margin-bottom: 0;
 }
