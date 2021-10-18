@@ -32,11 +32,10 @@ app.add_middleware(
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-username = config("username")
-password = config("password")
+username = config("admin_username")
+password = config("admin_password")
 security = HTTPBasic()
 async def authorize(credentials: HTTPBasicCredentials):
-    #print(f"Username: {credentials.username}, Password: {credentials.password}")
     if credentials.username == username and credentials.password == password:
         return True
     else:
@@ -71,6 +70,17 @@ async def certification(request:Request):
 @app.get("/blog", response_class=HTMLResponse)
 async def blog(request:Request):
     return templates.TemplateResponse("blog.html", context={"request":request})
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin(request:Request, credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        return templates.TemplateResponse("admin.html", context={"request":request})
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to delete certificate",
+            headers={"WWW-Authenticate": "Basic"}
+        )
 
 @app.post("/set_aboutme")
 async def set_aboutme(text:str = Body(...), credentials: HTTPBasicCredentials = Depends(security)):
