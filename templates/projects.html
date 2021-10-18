@@ -116,7 +116,7 @@
         <div class="boxed">
             {% for project in projects %}
                 <div class="project_view" style="margin-left: 10%;margin-right: 10%;margin-bottom: 25px;">
-                    <div class="vi_left" style="padding-right: 4px;">
+                    <div class="vi_left" style="padding-right: 8px;">
                         <center>
                             <div>
 
@@ -129,8 +129,8 @@
                         <p class="content" style="padding-right: 50px;">
                             {{ project.description }}
                         </p>
-                        <div style="display: flex;margin-bottom: 15px;">
-                            <div style="display: flex;align-items: center;padding-right:10px;">
+                        <div style="display: flex;margin-bottom: 15px;margin-left:-9px;">
+                            <div style="display: flex;align-items: center;padding-right:5px;">
                                 <input type="image" id="like_btn{{project.id}}"
                                         style="height: 30px; width: 30px;" onclick="likeClicked(this, {{project.id}})"/>
     
