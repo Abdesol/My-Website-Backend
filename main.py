@@ -141,6 +141,10 @@ async def generate_file_name():
             break
     return gen_name
 
+@app.get("/get_database")
+async def get_database():
+    return FileResponse(f"Database/database.sqlite")
+
 async def save_file(file_name, file:UploadFile):
     with open(f"Files/{file_name}", "wb") as f:
         f.write(file.file.read())
