@@ -1,3 +1,4 @@
+from enum import unique
 from pony.orm import *
 import datetime
 
@@ -7,10 +8,9 @@ db.bind(provider='sqlite', filename='Database/database.sqlite', create_db=True)
 
 class Blog(db.Entity):
     title = Required(str)
-    slug = Required(str, unique=True)
     description = Required(str)
-    content = Required(str)
-    date = Required(datetime.datetime)
+    url = Required(str)
+    time = Required(int)
     likes = Optional(int)
 
 class Project(db.Entity):

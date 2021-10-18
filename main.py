@@ -295,6 +295,48 @@ async def dislike_certificate(id:int = Body(..., embed=True)):
     else:
         return {"Error": "Project not found"}
 
+# --------------------- blogs ----------------------------------
+@app.get('/all_blogs')
+async def all_blogs():
+    blogs = []
+    for blog in list(select(b for b in Blog)):
+        blogs.append(blog.to_dict())
+    return {"blogs": blogs}
+
+
+@app.post('/create_blog')
+async def create_blog(title, description, content,
+                      credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        with db_session:
+            slug = slugify(" ".join(title.split()[:5]))
+            blog = Blog(title=title, slug=slug, description=description, content=content,
+                        date=datetime.datetime.now())
+            return {"Blog Created": blog.to_dict()}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to create blog",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
+
+@app.post('/delete_blog')
+async def delete_blog(slug: str, credentials: HTTPBasicCredentials = Depends(security)):
+    if await authorize(credentials):
+        with db_session:
+            blog = Blog.get(slug=slug)
+            if blog is not None:
+                blog.delete()
+            else:
+                return {"Error": "Blog with the given slug not found."}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to delete blog",
+            headers={"WWW-Authenticate": "Basic"}
+        )
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=5000, host='0.0.0.0', reload=True)
