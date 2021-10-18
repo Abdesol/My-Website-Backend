@@ -115,7 +115,7 @@
         </script>
         <div class="boxed">
             {% for project in projects %}
-                <div class="project_view">
+                <div class="project_view" style="margin-left: 10%;margin-right: 10%;margin-bottom: 25px;">
                     <div class="vi_left" style="padding-right: 10px;">
                         <center>
                             <img id="{{project.id}}" style="height: 150px;width: 150px; padding: 10px;margin-left: 10px;">
@@ -126,7 +126,7 @@
                         <p class="content" style="white-space: pre-line;padding-left: 10px;">
                             {{ project.description }}
                         </p>
-                        <div  style="display: flex;align-items: center;">
+                        <div  style="display: flex;align-items: center;margin-bottom: 15px;margin-left: -5px;">
                             <div  style="display: flex;align-items: center;margin-right: 25px;">
     
                                 <input type="image" id="like_btn{{project.id}}"
