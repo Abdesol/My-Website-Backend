@@ -323,13 +323,11 @@ async def all_blogs():
 
 
 @app.post('/create_blog')
-async def create_blog(title, description, content,
+async def create_blog(title, description, url, img,
                       credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
         with db_session:
-            slug = slugify(" ".join(title.split()[:5]))
-            blog = Blog(title=title, slug=slug, description=description, content=content,
-                        date=datetime.datetime.now())
+            blog = Blog(title=title, description=description, url=url, img=img)
             return {"Blog Created": blog.to_dict()}
     else:
         raise HTTPException(
@@ -340,10 +338,10 @@ async def create_blog(title, description, content,
 
 
 @app.post('/delete_blog')
-async def delete_blog(slug: str, credentials: HTTPBasicCredentials = Depends(security)):
+async def delete_blog(id:int, credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
         with db_session:
-            blog = Blog.get(slug=slug)
+            blog = Blog.get(id=id)
             if blog is not None:
                 blog.delete()
             else:
@@ -355,6 +353,23 @@ async def delete_blog(slug: str, credentials: HTTPBasicCredentials = Depends(sec
             headers={"WWW-Authenticate": "Basic"}
         )
 
+@app.post("/like_blog")
+async def like_blog(id:int = Body(..., embed=True)):
+    blog = Blog.get(id=id)
+    if blog is not None:
+        with db_session:
+            blog.set(likes=blog.likes+1)
+    else:
+        return {"Error": "Project not found"}
+
+@app.post("/dislike_blog")
+async def dislike_blog(id:int = Body(..., embed=True)):
+    blog = Blog.get(id=id)
+    if blog is not None:
+        with db_session:
+            blog.set(likes=blog.likes - 1)
+    else:
+        return {"Error": "Project not found"}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=5000, host='0.0.0.0', reload=True)
