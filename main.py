@@ -19,7 +19,7 @@ import string
 from fastapi import Body
 import json
 from decouple import config
-
+from zipfile import ZipFile
 
 
 app = FastAPI()
@@ -143,7 +143,20 @@ async def generate_file_name():
 
 @app.get("/get_database")
 async def get_database():
-    return FileResponse(f"Database/database.sqlite")
+    return FileResponse("Database/database.sqlite")
+
+@app.get("/get_files")
+async def get_files():
+    try:
+        os.remove('files.zip')
+    except:pass
+    zip_file = ZipFile('files.zip', 'w')
+    files = os.listdir("Files")
+    for file in files:
+        zip_file.write(f"Files/{file}")
+    zip_file.close()
+
+    return FileResponse('files.zip')
 
 async def save_file(file_name, file:UploadFile):
     with open(f"Files/{file_name}", "wb") as f:
