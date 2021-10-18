@@ -13,6 +13,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:type" content="website"/>
     <!-- Bootstrap -->
+
+<!-- Bootstrap -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -26,13 +28,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Poppins&display=swap" rel="stylesheet">
     <!-- Staatliches -->
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Poppins&family=Staatliches&display=swap" rel="stylesheet">
-   <!--Bree -->
+    <!--Bree -->
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Bree+Serif&family=Poppins&family=Staatliches&display=swap" rel="stylesheet">
-
-
 
    <!-- Font awesome -->
     <script src="https://kit.fontawesome.com/6ff322857f.js" crossorigin="anonymous"></script>
+    
+    <!-- jquary-cdn-link -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+     <!--  custom js file  -->
+     <script src="{{ url_for('static', path='/js/main.js') }}"></script>
     
     <!-- custom css file -->
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
@@ -77,8 +85,62 @@
 
     <!-- ======================= End Header Area ============================== -->
 
-    <main class="site-main" style="padding-top: 50px;">
-        <h1 style="text-align: center;margin-top: 250px;margin-bottom: 250px;">Under construction</h1>
+    <main class="site-main">
+        <h1 class="cert-text text-uppercase"><center><br>Blogs</center></h1><br>
+        <script>
+            var main_url  = window.location.origin;
+            var dislike_url = window.location.origin + "/dislike_project";
+            var like_url = window.location.origin + "/like_project";
+    
+            var blogs =  {{ blogs | safe }};
+    
+            var LikedBlogs = loadLocalStorage("LikedBlogs");
+    
+            function likeClicked(button, id){
+                var currentLikes = parseInt(document.getElementById("like_count" + id).innerHTML);
+    
+                if(LikedBlogs.includes(id)){
+                    var response = like_or_dislike(id, dislike_url);
+                    if(response === true){
+                        document.getElementById("like_count" + id).innerHTML = currentLikes - 1
+                        button.src = "{{ url_for('static', path='/img/like.png') }}"
+                        LikedBlogs.splice(LikedBlogs.indexOf(id), 1)
+                    }
+                }
+                else{
+                    var response = like_or_dislike(id, like_url);
+                    if(response === true){
+                        document.getElementById("like_count" + id).innerHTML = currentLikes + 1
+                        button.src = "{{ url_for('static', path='/img/liked.png') }}"
+                        LikedBlogs.push(id);
+                    }
+                }
+                localStorage.removeItem("LikedBlogs");
+                localStorage.setItem("LikedBlogs", JSON.stringify(LikedBlogs));
+            }
+        </script>
+        <div class="boxed">
+            {% for blog in blogs %}
+                <div class="project_view" style="margin-left: 8%;margin-right: 8%;display: block;">
+                    <img id="{{blog.id}}" style="width: 70%;margin-left: 15%">
+                    <p class="title" style="padding-left: 10%;">{{ blog.title }}</p>
+                    <p class="content" style="white-space: pre-line;padding-left: 10%;padding-right: 2%;font-size: 20px;">{{ blog.description }}</p>
+                    
+                    <div style="display: flex;align-items: center;padding-left: 12%;padding-top:20px;">
+                        <div  style="display: flex;align-items: center;margin-right: 25px;">
+                            <input type="image" id="like_btn{{blog.id}}"
+                                    style="height: 30px; width: 30px;" onclick="likeClicked(this, {{blog.id}})"/>
+                            <div id="like_count{{blog.id}}" style="font-size: 18px;" >{{ blog.likes }}</div>
+                        </div>
+                        <a href="{{ blog.url }}" target="_blank"><div class="btn" style="width: 170px;">View on Medium</div></a>
+                    </div>
+                    <script>
+                        document.getElementById("{{blog.id}}").src = main_url + "/files/" + "{{blog.img}}";
+                        likeBtnStart(document.getElementById("like_btn{{blog.id}}"), "{{blog.id}}", LikedBlogs)
+                    </script>
+                </div>
+            {% endfor %}
+        </div>
     </main>
 
     <footer class="footer-area">

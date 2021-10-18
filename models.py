@@ -10,8 +10,8 @@ class Blog(db.Entity):
     title = Required(str)
     description = Required(str)
     url = Required(str)
-    time = Required(int)
     likes = Optional(int)
+    img = Required(str)
 
 class Project(db.Entity):
     title = Required(str)

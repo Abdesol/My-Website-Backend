@@ -69,7 +69,8 @@ async def certification(request:Request):
 
 @app.get("/blog", response_class=HTMLResponse)
 async def blog(request:Request):
-    return templates.TemplateResponse("blog.html", context={"request":request})
+    blogs = await all_blogs()
+    return templates.TemplateResponse("blog.html", context={"request":request, "blogs":blogs["blogs"]})
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin(request:Request, credentials: HTTPBasicCredentials = Depends(security)):
