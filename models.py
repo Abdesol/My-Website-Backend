@@ -24,6 +24,7 @@ class Certificate(db.Entity):
     name = Required(str)
     src = Required(str)
     likes = Optional(int)
+    url = Required(str)
 
 
 db.generate_mapping(create_tables=True)

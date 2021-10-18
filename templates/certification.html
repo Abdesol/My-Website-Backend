@@ -108,6 +108,23 @@
         <h1 class="cert-text text-uppercase" style="padding-bottom: 30px;"><center><br>Certifications</center></h1><br>
         <div class="boxed">
             {% for certificate in certificates %}
+                <div class="project_view" style="margin-left: 8%;margin-right: 8%;display: block;">
+                    <img id="img{{certificate.id}}" style="width: 70%;margin-left: 15%">
+                    <p class="title" style="padding-left: 15%;">{{ certificate.name }}</p>                    
+                    <div style="display: flex;align-items: center;padding-left: 15%;padding-top:20px;margin-bottom: 15px;">
+                        <div  style="display: flex;align-items: center;margin-right: 25px;">
+                            <input type="image" id="like_btn{{certificate.id}}"
+                                    style="height: 30px; width: 30px;" onclick="likeClicked(this, {{certificate.id}})"/>
+                            <div id="like_count{{certificate.id}}" style="font-size: 18px;" >{{ certificate.likes }}</div>
+                        </div>
+                        <a href="{{ certificate.url }}" target="_blank"><div class="btn" style="width: 170px;">View Course</div></a>
+                    </div>
+                    <script>
+                        document.getElementById("img{{certificate.id}}").src = main_url + "/files/" + "{{certificate.src}}";
+                        likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
+                    </script>
+                </div>
+            <!--
                 <div style="display: flex;padding-left: 18%;">
                     <h3 class="cert-text text-uppercase" style="padding-left: 30px;">{{ certificate.name }}</h3>
                     <div style="display: flex;padding-left: 5%"></div>
@@ -121,6 +138,7 @@
                     document.getElementById("img{{certificate.id}}").src = main_url + "/files/" + "{{certificate.src}}";
                     likeBtnStart(document.getElementById("like_btn{{certificate.id}}"), "{{certificate.id}}", LikedCertificates)
                 </script>
+            -->
             {% endfor %}
         </div>
     </main>
