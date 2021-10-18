@@ -1,7 +1,8 @@
-from typing import ContextManager
+from typing import ContextManager, Dict
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
+from pony.thirdparty.compiler.ast import List
 from pydantic.main import BaseModel
 from starlette import responses
 from starlette.responses import FileResponse, HTMLResponse
@@ -163,12 +164,12 @@ async def save_file(file_name, file:UploadFile):
     with open(f"Files/{file_name}", "wb") as f:
         f.write(file.file.read())
 
-
 @app.get("/all_projects")
 async def all_projects():
     projects = []
     for project in list(select(b for b in Project)):
         projects.append(project.to_dict())
+    projects = sorted(projects, key=lambda x: x["likes"], reverse=True)
     return {"projects": projects}
 
 class ProjectModel(BaseModel):
@@ -260,6 +261,7 @@ async def all_certificates():
     for certificate in list(select(b for b in Certificate)):
         certificates.append(certificate.to_dict())
 
+    certificates = sorted(certificates, key=lambda x: x["likes"], reverse=True)
     return {"certificates": certificates}
 
 class CertificateModel(BaseModel):
@@ -319,6 +321,8 @@ async def all_blogs():
     blogs = []
     for blog in list(select(b for b in Blog)):
         blogs.append(blog.to_dict())
+        
+    blogs = sorted(blogs, key=lambda x: x["likes"], reverse=True)
     return {"blogs": blogs}
 
 
