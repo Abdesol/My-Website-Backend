@@ -331,7 +331,7 @@ async def create_blog(title, description, url, img,
                       credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
         with db_session:
-            blog = Blog(title=title, description=description, url=url, img=img)
+            blog = Blog(title=title, description=description, url=url, img=img, likes=0)
             return {"Blog Created": blog.to_dict()}
     else:
         raise HTTPException(
