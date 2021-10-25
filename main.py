@@ -267,11 +267,12 @@ async def all_certificates():
 class CertificateModel(BaseModel):
     name:str
     src:str
+    url:str
 @app.post('/create_certificate')
 async def create_certificate(request:CertificateModel, credentials: HTTPBasicCredentials = Depends(security)):
     if await authorize(credentials):
         with db_session:
-            certificate = Certificate(name=request.name, src=request.src, likes=0)
+            certificate = Certificate(name=request.name, src=request.src, url=request.url, likes=0)
             return {"Certificate Created": certificate.to_dict()}
     else:
         raise HTTPException(
