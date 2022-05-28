@@ -30,4 +30,4 @@ jobs:
         run: cp ~/.env .env
 
       - name: Start server
-        run: pm2 start main.py --name MyWebsite --interpreter python
+        run: pm2 start main.py --name MyWebsite --interpreter python3
