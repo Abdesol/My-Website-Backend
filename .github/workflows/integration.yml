@@ -25,6 +25,9 @@ jobs:
         run: |
           pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          
+      - name: Copy env file
+        run: cp ~/.env .env
 
       - name: Start server
         run: pm2 start main.py --name MyWebsite --interpreter python
