@@ -18,7 +18,7 @@ passlib==1.7.4
 pony==0.7.14
 pycodestyle==2.6.0
 pycparser==2.20
-pydantic==1.8.1
+pydantic==1.9.1
 python-multipart==0.0.5
 python-slugify==4.0.1
 requests==2.25.1
