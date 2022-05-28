@@ -26,7 +26,7 @@ jobs:
           pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           
-      - name: Copy env file
+      - name: Copy environment files
         run: cp ~/.env .env
 
       - name: Start server
